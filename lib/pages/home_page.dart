@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'produtos_page.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -9,14 +11,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-  PageController _pageController = PageController(initialPage: 0);
+  final PageController _pageController = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Minha pagina inicial'),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Minha pagina inicial'),
+      //   centerTitle: true,
+      // ),
       body: PageView(
         controller: _pageController,
         onPageChanged: (value) {
@@ -29,14 +31,11 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Colors.red,
             child: const Text('p1'),
           ),
-          Container(
-            color: Colors.green,
-            child: const Text('p2'),
-          )
+          const ProdutosPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Início',
