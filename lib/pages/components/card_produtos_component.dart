@@ -21,6 +21,7 @@ class _CardProdutosComponentState extends State<CardProdutosComponent> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: _qtdEstoque < widget.produto.getEstoqueMinimo() ? Colors.red[100] : Colors.blue[100],
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
