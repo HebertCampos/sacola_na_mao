@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:sacola_na_mao/models/produtos_model.dart';
 
 class CardProdutosComponent extends StatefulWidget {
-  const CardProdutosComponent({super.key});
+  final ProdutosModel produto;
+  const CardProdutosComponent({super.key, required this.produto});
 
   @override
   State<CardProdutosComponent> createState() => _CardProdutosComponentState();
 }
 
 class _CardProdutosComponentState extends State<CardProdutosComponent> {
-  int _qtdEstoque = 0;
+  late int _qtdEstoque = 0;
+
+  @override
+  void initState(){
+    super.initState();
+    _qtdEstoque = widget.produto.getQuantidade().toInt();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +25,13 @@ class _CardProdutosComponentState extends State<CardProdutosComponent> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       flex: 2,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Minimo'),
-                          Text('1'),
+                          const Text('Minimo'),
+                          Text(widget.produto.getEstoqueMinimo().toInt().toString()),
                         ],
                       ),
                     ),
@@ -35,8 +43,8 @@ class _CardProdutosComponentState extends State<CardProdutosComponent> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text("Nome produto", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-                            Text('Categoria produto', style: TextStyle(color: Colors.grey[500]),)
+                            Text(widget.produto.getNome(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+                            Text(widget.produto.getCategoria(), style: TextStyle(color: Colors.grey[500]),)
                           ],
                         )),
                     const SizedBox(
