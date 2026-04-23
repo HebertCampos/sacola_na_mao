@@ -10,6 +10,7 @@ class ProdutosPage extends StatefulWidget {
 }
 
 class _ProdutosPageState extends State<ProdutosPage> {
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,11 +18,25 @@ class _ProdutosPageState extends State<ProdutosPage> {
         title: const Text('Produtos'),
         centerTitle: true,
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(8.0),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            CardProdutosComponent(),
+            TextField(
+              controller: searchController,
+              onChanged: (value) => 
+                setState(() {
+                  print(value);
+                }),
+              decoration: const InputDecoration(
+                label: Text('Pesquisar produto'),
+                prefixIcon: Icon(Icons.search)
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const CardProdutosComponent(),
           ],
         ),
       ),
