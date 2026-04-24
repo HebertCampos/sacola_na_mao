@@ -14,18 +14,33 @@ class _ProdutosPageState extends State<ProdutosPage> {
   TextEditingController searchController = TextEditingController();
 
   final List<ProdutosModel> _produtos = [
-    ProdutosModel(nome: 'Arroz', quantidade: 2, categoria: 'Grãos', estoqueMinimo: 1),
-    ProdutosModel(nome: 'Biscoito Maizena', quantidade: 3, categoria: 'Lanche', estoqueMinimo: 4),
-    ProdutosModel(nome: 'Feijão', quantidade: 30, categoria: 'Grãos', estoqueMinimo: 5),
-    ProdutosModel(nome: 'Macarrão', quantidade: 25, categoria: 'Massas', estoqueMinimo: 8),
-    ProdutosModel(nome: 'Óleo', quantidade: 100, categoria: 'Temperos', estoqueMinimo: 20),
-    ProdutosModel(nome: 'Sal', quantidade: 5, categoria: 'Temperos', estoqueMinimo: 10),
+    ProdutosModel(
+        nome: 'Arroz', quantidade: 2, categoria: 'Grãos', estoqueMinimo: 1),
+    ProdutosModel(
+        nome: 'Biscoito Maizena',
+        quantidade: 3,
+        categoria: 'Lanche',
+        estoqueMinimo: 4),
+    ProdutosModel(
+        nome: 'Feijão', quantidade: 30, categoria: 'Grãos', estoqueMinimo: 5),
+    ProdutosModel(
+        nome: 'Macarrão',
+        quantidade: 25,
+        categoria: 'Massas',
+        estoqueMinimo: 8),
+    ProdutosModel(
+        nome: 'Óleo',
+        quantidade: 100,
+        categoria: 'Temperos',
+        estoqueMinimo: 20),
+    ProdutosModel(
+        nome: 'Sal', quantidade: 5, categoria: 'Temperos', estoqueMinimo: 10),
   ];
 
   List<ProdutosModel> _produtosFiltrados = [];
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _produtosFiltrados = List.from(_produtos);
   }
@@ -35,11 +50,13 @@ class _ProdutosPageState extends State<ProdutosPage> {
       _produtosFiltrados = _produtos
           .where((produto) =>
               produto.getNome().toLowerCase().contains(termo.toLowerCase()) ||
-              produto.getCategoria().toLowerCase().contains(termo.toLowerCase()))
+              produto
+                  .getCategoria()
+                  .toLowerCase()
+                  .contains(termo.toLowerCase()))
           .toList();
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -56,21 +73,29 @@ class _ProdutosPageState extends State<ProdutosPage> {
               controller: searchController,
               onChanged: _filtrarProdutos,
               decoration: const InputDecoration(
-                label: Text('Pesquisar produto'),
-                prefixIcon: Icon(Icons.search)
-              ),
+                  label: Text('Pesquisar produto'),
+                  prefixIcon: Icon(Icons.search)),
             ),
             const SizedBox(
               height: 20,
             ),
-            Expanded(child: ListView.builder(
-              itemCount: _produtosFiltrados.length,
-              itemBuilder: (context, index){
-                return CardProdutosComponent(produto: _produtosFiltrados[index],);
-              }
-              )),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _produtosFiltrados.length,
+                itemBuilder: (context, index) {
+                  return CardProdutosComponent(
+                    produto: _produtosFiltrados[index],
+                  );
+                },
+              ),
+            ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Adicionar novo produto',
+        child: const Icon(Icons.add),
       ),
     );
   }
