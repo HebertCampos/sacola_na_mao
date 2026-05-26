@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sacola_na_mao/models/produtos_model.dart';
+import 'package:sacola_na_mao/repositories/produtos_repository.dart';
 
 import 'components/card_produtos_component.dart';
 
@@ -12,51 +13,66 @@ class ProdutosPage extends StatefulWidget {
 
 class _ProdutosPageState extends State<ProdutosPage> {
   TextEditingController searchController = TextEditingController();
+  TextEditingController nomeProdutoController = TextEditingController();
+  TextEditingController quantidadeProdutoController = TextEditingController();
+  TextEditingController categoriaProdutoController = TextEditingController();
+  TextEditingController estoqueProdutoController = TextEditingController();
 
-  final List<ProdutosModel> _produtos = [
-    ProdutosModel(
-        nome: 'Arroz', quantidade: 2, categoria: 'Grãos', estoqueMinimo: 1),
-    ProdutosModel(
-        nome: 'Biscoito Maizena',
-        quantidade: 3,
-        categoria: 'Lanche',
-        estoqueMinimo: 4),
-    ProdutosModel(
-        nome: 'Feijão', quantidade: 30, categoria: 'Grãos', estoqueMinimo: 5),
-    ProdutosModel(
-        nome: 'Macarrão',
-        quantidade: 25,
-        categoria: 'Massas',
-        estoqueMinimo: 8),
-    ProdutosModel(
-        nome: 'Óleo',
-        quantidade: 100,
-        categoria: 'Temperos',
-        estoqueMinimo: 20),
-    ProdutosModel(
-        nome: 'Sal', quantidade: 5, categoria: 'Temperos', estoqueMinimo: 10),
-  ];
 
   List<ProdutosModel> _produtosFiltrados = [];
+
+  var produtosRepository = ProdutosRepository();
+  List<ProdutosModel> _listaProdutos = [];
+
+  Future<void> _carregarProdutos() async {
+    _listaProdutos = await produtosRepository.listProdutos();
+    setState(() {
+    });
+  }
+
+  _salvarProduto() async{
+    String nome = nomeProdutoController.text;
+    double quantidade = double.tryParse(quantidadeProdutoController.text)??0;
+    String categoria = categoriaProdutoController.text;
+    double estoqueMinimo = double.tryParse(estoqueProdutoController.text)??0;
+
+    await produtosRepository.adicionarProduto(ProdutosModel(nome: nome, quantidade: quantidade, categoria: categoria, estoqueMinimo: estoqueMinimo));
+
+    nomeProdutoController.text = '';
+    quantidadeProdutoController.text = '';
+    categoriaProdutoController.text = '';
+    estoqueProdutoController.text = '';
+
+    _listaProdutos = await produtosRepository.listProdutos();
+    _produtosFiltrados = List.from(_listaProdutos);
+    
+    if (mounted) {
+      Navigator.of(context).pop();
+      setState(() {});
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _produtosFiltrados = List.from(_produtos);
-  }
-
-  void _filtrarProdutos(String termo) {
-    setState(() {
-      _produtosFiltrados = _produtos
-          .where((produto) =>
-              produto.getNome().toLowerCase().contains(termo.toLowerCase()) ||
-              produto
-                  .getCategoria()
-                  .toLowerCase()
-                  .contains(termo.toLowerCase()))
-          .toList();
+    _carregarProdutos().then((_){
+      _produtosFiltrados = List.from(_listaProdutos);
     });
   }
+
+void _filtrarProdutos(String termo) {
+  setState(() {
+    if (termo.isEmpty) {
+      _produtosFiltrados = List.from(_listaProdutos);
+    } else {
+      _produtosFiltrados = _listaProdutos
+          .where((produto) =>
+              produto.getNome().toLowerCase().contains(termo.toLowerCase()) ||
+              produto.getCategoria().toLowerCase().contains(termo.toLowerCase()))
+          .toList();
+    }
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +109,54 @@ class _ProdutosPageState extends State<ProdutosPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showDialog(context: context, builder: (BuildContext context){
+            return AlertDialog(
+              title: const Text('Adicionar Produto'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: nomeProdutoController,
+                    decoration: const InputDecoration(
+                      labelText: 'Nome do produto',
+                    ),
+                  ),
+                  TextField(
+                    controller: quantidadeProdutoController,
+                    decoration: const InputDecoration(
+                      labelText: 'Quantidade atual do produto'
+                    )
+                  ),
+                  TextField(
+                    controller: categoriaProdutoController,
+                    decoration: const InputDecoration(
+                      labelText: 'Categoria do produto'
+                    )
+                  ),
+                  TextField(
+                    controller: estoqueProdutoController,
+                    decoration: const InputDecoration(
+                      labelText: 'Estoque mínimo do produto'
+                    )
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancelar'),
+                ),
+                TextButton(
+                  onPressed: _salvarProduto,
+                  child: const Text('Salvar'),
+                ),
+              ],
+            );
+          });
+        },
         tooltip: 'Adicionar novo produto',
         child: const Icon(Icons.add),
       ),
