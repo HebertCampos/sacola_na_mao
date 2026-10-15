@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:path/path.dart' as path;
+import 'package:sqflite/sqflite.dart';
 
 class DatabaseRepository {
   static Database? db;
@@ -18,17 +15,7 @@ class DatabaseRepository {
 
   Future<Database?> iniciarBancoDeDados() async {
     try {
-      // Garantia extra de inicialização caso o main() não tenha sido suficiente
-      // ignore: unnecessary_null_comparison
-      if (databaseFactory == null) {
-        if (kIsWeb) {
-          databaseFactory = databaseFactoryFfiWeb;
-        } else {
-          databaseFactory = databaseFactoryFfi;
-        }
-      }
-
-      var db = await openDatabase(
+      db = await openDatabase(
         path.join(await getDatabasesPath(), 'database.db'),
         version: scripts.length, 
         onCreate:(Database db, int version) async {
