@@ -1,18 +1,24 @@
 class ProdutosModel {
+  int _id = 0;
   String _nome;
   double _quantidade;
   String _categoria;
   double _estoqueMinimo;
 
-  ProdutosModel({
+  ProdutosModel(Object? element, {
+    int? id,
     required String nome,
     required double quantidade,
     required String categoria,
     required double estoqueMinimo,
-  })  : _nome = nome,
+  })  : _id = id ?? 0,
+        _nome = nome,
         _quantidade = quantidade,
         _categoria = categoria,
         _estoqueMinimo = estoqueMinimo;
+
+  int getId() => _id;
+  void setId(int id) => _id = id;
 
   String getNome() => _nome;
   void setNome(String nome) => _nome = nome;
