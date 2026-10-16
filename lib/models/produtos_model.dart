@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class ProdutosModel {
   int _id = 0;
   String _nome;
@@ -31,4 +33,9 @@ class ProdutosModel {
 
   double getEstoqueMinimo() => _estoqueMinimo;
   void setEstoqueMinimo(double estoqueMinimo) => _estoqueMinimo = estoqueMinimo;
+
+  int get quantidadeAbaixoDoMinimo {
+  return max(0, getEstoqueMinimo().toInt() - getQuantidade().toInt());
+}
+
 }
