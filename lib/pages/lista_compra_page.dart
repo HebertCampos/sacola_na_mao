@@ -51,7 +51,8 @@ class _ListaCompraPageState extends State<ListaCompraPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
-        title: const Text('Lista de Compra')
+        title: const Text('Lista de Compra'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),

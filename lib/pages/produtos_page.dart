@@ -110,24 +110,28 @@ void _abrirDialogo({ProdutosModel? produto}) {
         children: [
           TextField(
             controller: nomeProdutoController,
+            keyboardType: TextInputType.text,
             decoration: const InputDecoration(
               labelText: 'Nome do produto',
             ),
           ),
           TextField(
             controller: quantidadeProdutoController,
+            keyboardType: TextInputType.number,
             decoration: const InputDecoration(
               labelText: 'Quantidade atual do produto'
             )
           ),
           TextField(
             controller: categoriaProdutoController,
+            keyboardType: TextInputType.text,
             decoration: const InputDecoration(
               labelText: 'Categoria do produto'
             )
           ),
           TextField(
             controller: estoqueProdutoController,
+            keyboardType: TextInputType.number,
             decoration: const InputDecoration(
               labelText: 'Estoque mínimo do produto'
             )
