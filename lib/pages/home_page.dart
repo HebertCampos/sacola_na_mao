@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sacola_na_mao/pages/lista_compra_page.dart';
 
 import 'produtos_page.dart';
 
@@ -26,20 +27,17 @@ class _MyHomePageState extends State<MyHomePage> {
             _selectedIndex = value;
           });
         },
-        children: [
-          Container(
-            color: Colors.red,
-            child: const Text('p1'),
-          ),
-          const ProdutosPage(),
+        children: const [
+          ListaCompraPage(),
+          ProdutosPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Início',
-              tooltip: 'Pagina de início com as informações dos produtos'),
+              icon: Icon(Icons.add_shopping_cart),
+              label: 'Lista de Compra',
+              tooltip: 'Pagina de lista de compra, onde é possivel ver os produtos que estão abaixo do estoque minimo'),
           BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart),
               label: 'Produtos',
