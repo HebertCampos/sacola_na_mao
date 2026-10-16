@@ -15,7 +15,7 @@ class ProdutosRepositorySQLite implements ProdutosRepository {
 
     var db = await DatabaseRepository().getDatabase();
     if (db == null) return [];
-    var result = await db.rawQuery('SELECT * FROM produtos');
+    var result = await db.rawQuery('SELECT * FROM produtos ORDER BY nome ASC');
 
     for (var element in result) {
       produtos.add(ProdutosModel(element,
